@@ -10,7 +10,7 @@
 This game is part of the Udacity Project for the completion of the Froned Web Development Nanodegree. The game is developed using HTML, CSS and Pure JavaScript.
 
 ## The Game
-This is an classic memmory game you have find 2 matching elemts in the displays cards. You win as soon as you have found all matching elemts.
+This is an classic memory game you have find 2 matching elements in the displays cards. You win as soon as you have found all matching elements.
 
 
 ## Acknowledgements
