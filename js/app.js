@@ -1,4 +1,4 @@
-const availableCards = ['bomb', 'paper-plane-o','diamond','repeat','anchor','bolt','cube','leaf','bicycle']
+const availableCards = ['bomb', 'paper-plane-o','diamond','repeat','anchor','bolt','cube','leaf']
 
 /**
 * @description sets up a new gamebord
@@ -81,6 +81,6 @@ function shuffle(array) {
  }
 
  document.addEventListener('DOMContentLoaded', function () {
-   buildGame();
+   buildBoard();
    document.querySelector('.deck').addEventListener('click', turnCardClickEvent);
  });
