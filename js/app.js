@@ -83,4 +83,6 @@ function shuffle(array) {
  document.addEventListener('DOMContentLoaded', function () {
    buildBoard();
    document.querySelector('.deck').addEventListener('click', turnCardClickEvent);
+   document.querySelector('.restart').addEventListener('click', buildBoard);
+
  });
