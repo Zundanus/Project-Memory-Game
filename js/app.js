@@ -1,4 +1,4 @@
-const availableCards = ['bomb', 'paper-plane-o','diamond','repeat','anchor','bolt','cube','leaf']
+const availableCards = ['bomb', 'paper-plane-o','diamond','repeat','anchor','bolt','cube','leaf','bicycle']
 
 /**
 * @description sets up a new gamebord
