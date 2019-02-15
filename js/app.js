@@ -1,4 +1,4 @@
-const availableCards = ['bomb', 'paper-plane-o','diamond','repeat','anchor','bolt','cube','leaf']
+const availableCards = ['bomb', 'paper-plane-o','diamond','repeat','anchor','bolt','cube','leaf'];
 
 /**
 * @description sets up a new gamebord
@@ -7,11 +7,11 @@ function buildBoard(){
    var cardList = shuffle(availableCards.concat(availableCards));
    const fragmentCardBord = document.createDocumentFragment();
 
-   for (card of cardList) {
+   for (let card of cardList) {
      fragmentCardBord.appendChild(cardTemplate(card));
    }
    document.querySelector('.deck').innerHTML = '';
-   document.querySelector('.deck').appendChild(fragmentCardBord)
+   document.querySelector('.deck').appendChild(fragmentCardBord);
 }
 /**
 * @description returns the html template for a card
@@ -33,9 +33,8 @@ function cardTemplate(cardId){
 * @return unsortet arry of objects
 * form: Shuffle function from http://stackoverflow.com/a/2450976
 */
-
 function shuffle(array) {
-    let currentIndex = array.length, temporaryValue, randomIndex;
+    var currentIndex = array.length, temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
