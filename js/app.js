@@ -1,18 +1,41 @@
-/*
- * Create a list that holds all of your cards
- */
+const availableCards = ['bomb', 'paper-plane-o','diamond','repeat','anchor','bolt','cube','leaf']
 
+/**
+* @description sets up a new gamebord
+*/
+function buildBoard(){
+   var cardList = shuffle(availableCards.concat(availableCards));
+   const fragmentCardBord = document.createDocumentFragment();
 
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
+   for (card of cardList) {
+     fragmentCardBord.appendChild(cardTemplate(card));
+   }
+   document.querySelector('.deck').innerHTML = '';
+   document.querySelector('.deck').appendChild(fragmentCardBord)
+}
+/**
+* @description returns the html template for a card
+* @param  cardId - id Of the card
+* @return htmlElemt for a card element
+*/
+function cardTemplate(cardId){
+  const li = document.createElement('li');
+  li.className = 'card';
+  const i = document.createElement('i');
+  i.className = `fa fa-${cardId}`;
+  li.appendChild(i);
+  return li;
+}
 
-// Shuffle function from http://stackoverflow.com/a/2450976
+/**
+* @description schuffels an arry
+* @param  element - array of objects
+* @return unsortet arry of objects
+* form: Shuffle function from http://stackoverflow.com/a/2450976
+*/
+
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+    let currentIndex = array.length, temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
@@ -36,3 +59,28 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+ /**
+ * @description evaluates the card click event and initiates the necessary validations and actions
+ * @param  element - Card Element
+ */
+ function turnCardClickEvent(elemet){
+   let card = elemet.target;
+   if (card.classList.contains('card') || card.classList.contains('fa')) {
+        turnCard(card.classList.contains('card') ? card : card.parentNode);
+     }
+ }
+
+ /**
+ * @description  Handels the visual turning of the card
+ * @param card - Card Element
+ */
+ function turnCard(card){
+    card.classList.toggle('show');
+    card.classList.toggle('open');
+ }
+
+ document.addEventListener('DOMContentLoaded', function () {
+   buildGame();
+   document.querySelector('.deck').addEventListener('click', turnCardClickEvent);
+ });
