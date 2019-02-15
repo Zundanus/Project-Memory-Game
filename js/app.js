@@ -21,6 +21,7 @@ function buildBoard(){
 function cardTemplate(cardId){
   const li = document.createElement('li');
   li.className = 'card';
+  li.setAttribute('data-cardid',cardId);
   const i = document.createElement('i');
   i.className = `fa fa-${cardId}`;
   li.appendChild(i);
@@ -58,7 +59,8 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
-
+let selectedCards;
+let matchedCards = [];
  /**
  * @description evaluates the card click event and initiates the necessary validations and actions
  * @param  element - Card Element
@@ -66,8 +68,24 @@ function shuffle(array) {
  function turnCardClickEvent(elemet){
    let card = elemet.target;
    if (card.classList.contains('card') || card.classList.contains('fa')) {
-        turnCard(card.classList.contains('card') ? card : card.parentNode);
-     }
+     let cardElemet = card.classList.contains('card') ? card : card.parentNode;
+     turnCard(cardElemet);
+     if (selectedCards != undefined) {
+       if (selectedCards.dataset.cardid === cardElemet.dataset.cardid) {
+         selectedCards.classList.toggle('match');
+         cardElemet.classList.toggle('match');
+         matchedCards += 2;
+       }
+       else {
+         //todo animait wrong selection
+         turnCard(cardElemet);
+         turnCard(selectedCards);
+       }
+       selectedCards = undefined;
+    } else {
+      selectedCards = cardElemet
+    }
+   }
  }
 
  /**
