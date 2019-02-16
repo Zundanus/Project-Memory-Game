@@ -1,27 +1,27 @@
-const availableCards = ['bomb', 'paper-plane-o','diamond','repeat','anchor','bolt','cube','leaf'];
+const availableCards = ['bomb', 'paper-plane-o', 'diamond', 'repeat', 'anchor', 'bolt', 'cube', 'leaf'];
 
 /**
-* @description sets up a new gamebord
-*/
-function buildBoard(){
-   var cardList = shuffle(availableCards.concat(availableCards));
-   const fragmentCardBord = document.createDocumentFragment();
+ * @description sets up a new gamebord
+ */
+function buildBoard() {
+  var cardList = shuffle(availableCards.concat(availableCards));
+  const fragmentCardBord = document.createDocumentFragment();
 
-   for (let card of cardList) {
-     fragmentCardBord.appendChild(cardTemplate(card));
-   }
-   document.querySelector('.deck').innerHTML = '';
-   document.querySelector('.deck').appendChild(fragmentCardBord);
+  for (let card of cardList) {
+    fragmentCardBord.appendChild(cardTemplate(card));
+  }
+  document.querySelector('.deck').innerHTML = '';
+  document.querySelector('.deck').appendChild(fragmentCardBord);
 }
 /**
-* @description returns the html template for a card
-* @param  cardId - id Of the card
-* @return htmlElemt for a card element
-*/
-function cardTemplate(cardId){
+ * @description returns the html template for a card
+ * @param  cardId - id Of the card
+ * @return htmlElemt for a card element
+ */
+function cardTemplate(cardId) {
   const li = document.createElement('li');
   li.className = 'card';
-  li.setAttribute('data-cardid',cardId);
+  li.setAttribute('data-cardid', cardId);
   const i = document.createElement('i');
   i.className = `fa fa-${cardId}`;
   li.appendChild(i);
@@ -29,23 +29,24 @@ function cardTemplate(cardId){
 }
 
 /**
-* @description schuffels an arry
-* @param  element - array of objects
-* @return unsortet arry of objects
-* form: Shuffle function from http://stackoverflow.com/a/2450976
-*/
+ * @description schuffels an arry
+ * @param  element - array of objects
+ * @return unsortet arry of objects
+ * form: Shuffle function from http://stackoverflow.com/a/2450976
+ */
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+  var currentIndex = array.length,
+    temporaryValue, randomIndex;
 
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
 
-    return array;
+  return array;
 }
 
 
@@ -61,45 +62,44 @@ function shuffle(array) {
  */
 let selectedCards;
 let matchedCards = [];
- /**
+/**
  * @description evaluates the card click event and initiates the necessary validations and actions
  * @param  element - Card Element
  */
- function turnCardClickEvent(elemet){
-   let card = elemet.target;
-   if (card.classList.contains('card') || card.classList.contains('fa')) {
-     let cardElemet = card.classList.contains('card') ? card : card.parentNode;
-     turnCard(cardElemet);
-     if (selectedCards != undefined) {
-       if (selectedCards.dataset.cardid === cardElemet.dataset.cardid) {
-         selectedCards.classList.toggle('match');
-         cardElemet.classList.toggle('match');
-         matchedCards += 2;
-       }
-       else {
-         //todo animait wrong selection
-         turnCard(cardElemet);
-         turnCard(selectedCards);
-       }
-       selectedCards = undefined;
+function turnCardClickEvent(elemet) {
+  let card = elemet.target;
+  let cardElemet = card.classList.contains('card') ? card : card.parentNode;
+  if (cardElemet.className === 'card') {
+    turnCard(cardElemet);
+    if (selectedCards != undefined) {
+      if (selectedCards.dataset.cardid === cardElemet.dataset.cardid) {
+        selectedCards.classList.toggle('match');
+        cardElemet.classList.toggle('match');
+        matchedCards += 2;
+      } else {
+        //todo animait wrong selection
+        turnCard(cardElemet);
+        turnCard(selectedCards);
+      }
+      selectedCards = undefined;
     } else {
       selectedCards = cardElemet
     }
-   }
- }
+  }
+}
 
- /**
+/**
  * @description  Handels the visual turning of the card
  * @param card - Card Element
  */
- function turnCard(card){
-    card.classList.toggle('show');
-    card.classList.toggle('open');
- }
+function turnCard(card) {
+  card.classList.toggle('show');
+  card.classList.toggle('open');
+}
 
- document.addEventListener('DOMContentLoaded', function () {
-   buildBoard();
-   document.querySelector('.deck').addEventListener('click', turnCardClickEvent);
-   document.querySelector('.restart').addEventListener('click', buildBoard);
+document.addEventListener('DOMContentLoaded', function() {
+  buildBoard();
+  document.querySelector('.deck').addEventListener('click', turnCardClickEvent);
+  document.querySelector('.restart').addEventListener('click', buildBoard);
 
- });
+});
