@@ -3,6 +3,8 @@ let matchedMaxCards = 0;
 let selectedCard;
 let matchedCards = 0;
 let cardEvaluationRuning = false;
+const deck = document.querySelector('.deck');
+const winContainer = document.querySelector('.win-container');
 
 /**
  * @description sets up a new gamebord
@@ -10,13 +12,17 @@ let cardEvaluationRuning = false;
 function buildBoard() {
   var cardList = shuffle(availableCards.concat(availableCards));
   const fragmentCardBord = document.createDocumentFragment();
-
+  selectedCard = undefined;
   for (let card of cardList) {
     fragmentCardBord.appendChild(cardTemplate(card));
   }
   matchedMaxCards = cardList.length;
-  document.querySelector('.deck').innerHTML = '';
-  document.querySelector('.deck').appendChild(fragmentCardBord);
+  deck.innerHTML = '';
+  deck.appendChild(fragmentCardBord);
+  deck.classList.remove('hide');
+  if (!winContainer.classList.contains('hide')) {
+    winContainer.classList.add('hide');
+  }
 }
 
 /**
@@ -36,7 +42,7 @@ function cardTemplate(cardId) {
 
 /**
  * @description schuffels an arry
- * @param  element - array of objects
+ * @param  array - array of objects
  * @return unsortet arry of objects
  * form: Shuffle function from http://stackoverflow.com/a/2450976
  */
@@ -69,7 +75,7 @@ function shuffle(array) {
 
 /**
  * @description evaluates the card click event and initiates the necessary validations and actions
- * @param  element - Card Element
+ * @param  element - event element
  */
 function turnCardClickEvent(elemet) {
   let card = elemet.target;
@@ -79,13 +85,13 @@ function turnCardClickEvent(elemet) {
     turnCard(cardElemet);
     if (selectedCard != undefined) {
       if (selectedCard.dataset.cardid === cardElemet.dataset.cardid) {
-        setTimeout(function (){cardMatchAnimation(cardElemet);}, 1000);
+        setTimeout(function (){cardMatchAnimation(cardElemet);}, 500);
 
       } else {
-        setTimeout(function (){cardNoMatchAnimation(cardElemet);}, 1000);
+        setTimeout(function (){cardNoMatchAnimation(cardElemet);}, 500);
       }
     } else {
-      selectedCard = cardElemet
+      selectedCard = cardElemet;
       cardEvaluationRuning = false;
     }
   }
@@ -93,7 +99,7 @@ function turnCardClickEvent(elemet) {
 
 /**
  * @description  Handels the Animation for a matching Cardpair
- * @param card - Card Element
+ * @param cardElemet - Card Element
  */
 function cardMatchAnimation (cardElemet){
   selectedCard.classList.toggle('match');
@@ -111,12 +117,13 @@ function cardMatchAnimation (cardElemet){
  * @param card - Card Element
  */
 function animationGameWon (){
-  alert('youWon');
+  deck.classList.toggle('hide');
+  winContainer.classList.toggle('hide');
 }
 
 /**
  * @description  Handels the Animation for a not matching Cardpair
- * @param card - Card Element
+ * @param cardElemet - Card Element
  */
 function cardNoMatchAnimation (cardElemet){
   turnCard(cardElemet);
@@ -134,9 +141,19 @@ function turnCard(card) {
   card.classList.toggle('open');
 }
 
+/**
+ * @description  adds eventlistener to the reset buttons
+ * @param buttons - html Button elements
+ */
+function setResetGameEvent(buttons) {
+  for (let button of buttons) {
+    button.addEventListener('click', buildBoard,true);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   buildBoard();
-  document.querySelector('.deck').addEventListener('click', turnCardClickEvent);
-  document.querySelector('.restart').addEventListener('click', buildBoard);
+  setResetGameEvent(document.querySelectorAll('.restart'));
+  deck.addEventListener('click', turnCardClickEvent);
 
 });

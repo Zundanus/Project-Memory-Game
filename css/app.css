@@ -107,3 +107,43 @@ h1 {
     float: right;
     cursor: pointer;
 }
+
+.fa.big{
+  font-size: 4.5em;
+  color: green;
+}
+
+.win-container {
+  margin-top: 100px;
+  padding: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 480px;
+  border-radius: 41px 43px 43px 44px;
+  -moz-border-radius: 41px 43px 43px 44px;
+  -webkit-border-radius: 41px 43px 43px 44px;
+  border: 0px solid #e0e0e0;
+  background-color: #dedede;
+  -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+  box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+}
+
+.button{
+  background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
+  font-size: 1.5em;
+  padding: 10px;
+  border-radius: 10px 10px 10px 10px;
+  -moz-border-radius: 10px 10px 10px 10px;
+  -webkit-border-radius: 10px 10px 10px 10px;
+  border: 0px solid #000000;
+  -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+  box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+}
+
+.hide {
+  display:none;
+}
