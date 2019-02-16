@@ -15,12 +15,13 @@ const deck = document.querySelector('.deck');
  * @description sets up a new gamebord
  */
 function buildBoard() {
+  selectedCard = undefined;
   clearInterval(timerInterval);
   timer();
+  addToMoves(true);
+  setStarRanking();
   var cardList = shuffle(availableCards.concat(availableCards));
   const fragmentCardBord = document.createDocumentFragment();
-  selectedCard = undefined;
-  addToMoves(true);
   for (let card of cardList) {
     fragmentCardBord.appendChild(cardTemplate(card));
   }
@@ -52,7 +53,6 @@ function timer() {
     minutes = minutes < 10 ? "0" + minutes : minutes;
 
     timerDisplay.innerHTML = `${minutes}:${seconds}`;
-    lastTime.textContent = time.textContent;
   }, 1000);
 }
 
@@ -106,11 +106,11 @@ function turnCardClickEvent(elemet) {
       if (selectedCard.dataset.cardid === cardElemet.dataset.cardid) {
         setTimeout(function() {
           cardMatchAnimation(cardElemet);
-        }, 500);
+        }, 300);
       } else {
         setTimeout(function() {
           cardNoMatchAnimation(cardElemet);
-        }, 500);
+        }, 300);
       }
     } else {
       selectedCard = cardElemet;
@@ -130,6 +130,7 @@ function cardMatchAnimation(cardElemet) {
   cardEvaluationRuning = false;
   matchedCards += 2;
   addToMoves(false);
+  setStarRanking();
   if (matchedCards >= matchedMaxCards) {
     clearInterval(timerInterval);
     animationGameWon();
@@ -146,6 +147,7 @@ function cardNoMatchAnimation(cardElemet) {
   selectedCard = undefined;
   cardEvaluationRuning = false;
   addToMoves(false);
+  setStarRanking();
 }
 
 /**
@@ -156,8 +158,9 @@ function animationGameWon() {
   deck.classList.toggle('hide');
   winContainer.classList.toggle('hide');
 }
+
 /**
- * @description  Counts the gamemoves and displays them
+ * @description  Counts the gamemoves and displays them also
  * @param {bool} reset - resets the  move value to 0 when true
  */
 function addToMoves(reset) {
@@ -167,6 +170,32 @@ function addToMoves(reset) {
     moves += 1;
   }
   movesDisplay.textContent = moves;
+}
+
+/**
+ * @description  Counts the gamemoves and displays them also
+ */
+function setStarRanking() {
+  var stars = document.querySelector('.stars').querySelectorAll('.fa');
+
+  let starCount = 3;
+  if (moves < 16) {
+    stars[0].className = 'fa fa-star';
+    stars[1].className = 'fa fa-star';
+    stars[2].className = 'fa fa-star';
+  } else if (moves < 24) {
+    stars[0].className = 'fa fa-star';
+    stars[1].className = 'fa fa-star';
+    stars[2].className = 'fa fa-star-o';
+  } else if (moves < 40) {
+    stars[0].className = 'fa fa-star';
+    stars[1].className = 'fa fa-star-o';
+    stars[2].className = 'fa fa-star-o';
+  } else {
+    stars[0].className = 'fa fa-star-o';
+    stars[1].className = 'fa fa-star-o';
+    stars[2].className = 'fa fa-star-o';
+  }
 }
 
 /**
