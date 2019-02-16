@@ -1,5 +1,9 @@
 const availableCards = ['bomb', 'paper-plane-o', 'diamond', 'repeat', 'anchor', 'bolt', 'cube', 'leaf'];
 
+let selectedCard;
+let matchedCards = 0;
+let cardEvaluationRuning = false;
+
 /**
  * @description sets up a new gamebord
  */
@@ -13,6 +17,7 @@ function buildBoard() {
   document.querySelector('.deck').innerHTML = '';
   document.querySelector('.deck').appendChild(fragmentCardBord);
 }
+
 /**
  * @description returns the html template for a card
  * @param  cardId - id Of the card
@@ -60,8 +65,7 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
-let selectedCards;
-let matchedCards = [];
+
 /**
  * @description evaluates the card click event and initiates the necessary validations and actions
  * @param  element - Card Element
@@ -69,23 +73,43 @@ let matchedCards = [];
 function turnCardClickEvent(elemet) {
   let card = elemet.target;
   let cardElemet = card.classList.contains('card') ? card : card.parentNode;
-  if (cardElemet.className === 'card') {
+  if (cardElemet.className === 'card' && !cardEvaluationRuning) {
+    cardEvaluationRuning = true;
     turnCard(cardElemet);
-    if (selectedCards != undefined) {
-      if (selectedCards.dataset.cardid === cardElemet.dataset.cardid) {
-        selectedCards.classList.toggle('match');
-        cardElemet.classList.toggle('match');
+    if (selectedCard != undefined) {
+      if (selectedCard.dataset.cardid === cardElemet.dataset.cardid) {
+        setTimeout(function (){cardMatchAnimation(cardElemet);}, 1000);
         matchedCards += 2;
       } else {
-        //todo animait wrong selection
-        turnCard(cardElemet);
-        turnCard(selectedCards);
+        setTimeout(function (){cardNoMatchAnimation(cardElemet);}, 1000);
       }
-      selectedCards = undefined;
     } else {
-      selectedCards = cardElemet
+      selectedCard = cardElemet
+      cardEvaluationRuning = false;
     }
   }
+}
+
+/**
+ * @description  Handels the Animation for a matching Cardpair
+ * @param card - Card Element
+ */
+function cardMatchAnimation (cardElemet){
+  selectedCard.classList.toggle('match');
+  cardElemet.classList.toggle('match');
+  selectedCard = undefined;
+  cardEvaluationRuning = false;
+}
+
+/**
+ * @description  Handels the Animation for a not matching Cardpair
+ * @param card - Card Element
+ */
+function cardNoMatchAnimation (cardElemet){
+  turnCard(cardElemet);
+  turnCard(selectedCard);
+  selectedCard = undefined;
+  cardEvaluationRuning = false;
 }
 
 /**
