@@ -4,7 +4,10 @@ let selectedCard;
 let matchedCards = 0;
 let cardEvaluationRuning = false;
 let moves = 0;
-const movesDisply = document.querySelector('.moves');
+let timerDisplay = document.querySelector('.timeDisplay');
+let timerStart = 0;
+let timerInterval;
+const movesDisplay = document.querySelector('.moves');
 const winContainer = document.querySelector('.win-container');
 const deck = document.querySelector('.deck');
 
@@ -12,6 +15,8 @@ const deck = document.querySelector('.deck');
  * @description sets up a new gamebord
  */
 function buildBoard() {
+  clearInterval(timerInterval);
+  timer();
   var cardList = shuffle(availableCards.concat(availableCards));
   const fragmentCardBord = document.createDocumentFragment();
   selectedCard = undefined;
@@ -29,10 +34,33 @@ function buildBoard() {
 }
 
 /**
+ * @description Starts the timer for a game
+ * Timer inspired by https://stackoverflow.com/questions/20618355/the-simplest-possible-javascript-countdown-timer
+ **/
+function timer() {
+  let minutes = 0;
+  let seconds = 0;
+  timerInterval = setInterval(function() {
+    seconds = parseInt(seconds, 10) + 1;
+    minutes = parseInt(minutes, 10);
+    if (seconds >= 60) {
+      minutes += 1;
+      seconds = 0;
+    }
+
+    seconds = seconds < 10 ? "0" + seconds : seconds;
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+
+    timerDisplay.innerHTML = `${minutes}:${seconds}`;
+    lastTime.textContent = time.textContent;
+  }, 1000);
+}
+
+/**
  * @description returns the html template for a card
  * @param  cardId - id Of the card
  * @return htmlElemt for a card element
- */
+ **/
 function cardTemplate(cardId) {
   const li = document.createElement('li');
   li.className = 'card';
@@ -76,9 +104,13 @@ function turnCardClickEvent(elemet) {
     turnCard(cardElemet);
     if (selectedCard != undefined) {
       if (selectedCard.dataset.cardid === cardElemet.dataset.cardid) {
-        setTimeout(function (){cardMatchAnimation(cardElemet);}, 500);
+        setTimeout(function() {
+          cardMatchAnimation(cardElemet);
+        }, 500);
       } else {
-        setTimeout(function (){cardNoMatchAnimation(cardElemet);}, 500);
+        setTimeout(function() {
+          cardNoMatchAnimation(cardElemet);
+        }, 500);
       }
     } else {
       selectedCard = cardElemet;
@@ -91,7 +123,7 @@ function turnCardClickEvent(elemet) {
  * @description  Handels the Animation for a matching Cardpair
  * @param cardElemet - Card Element
  */
-function cardMatchAnimation (cardElemet){
+function cardMatchAnimation(cardElemet) {
   selectedCard.classList.toggle('match');
   cardElemet.classList.toggle('match');
   selectedCard = undefined;
@@ -99,6 +131,7 @@ function cardMatchAnimation (cardElemet){
   matchedCards += 2;
   addToMoves(false);
   if (matchedCards >= matchedMaxCards) {
+    clearInterval(timerInterval);
     animationGameWon();
   }
 }
@@ -107,7 +140,7 @@ function cardMatchAnimation (cardElemet){
  * @description  Handels the Animation for a not matching Cardpair
  * @param cardElemet - Card Element
  */
-function cardNoMatchAnimation (cardElemet){
+function cardNoMatchAnimation(cardElemet) {
   turnCard(cardElemet);
   turnCard(selectedCard);
   selectedCard = undefined;
@@ -119,7 +152,7 @@ function cardNoMatchAnimation (cardElemet){
  * @description  Handels the Animation that appiers on Winning a game
  * @param card - Card Element
  */
-function animationGameWon (){
+function animationGameWon() {
   deck.classList.toggle('hide');
   winContainer.classList.toggle('hide');
 }
@@ -127,13 +160,13 @@ function animationGameWon (){
  * @description  Counts the gamemoves and displays them
  * @param {bool} reset - resets the  move value to 0 when true
  */
-function addToMoves (reset){
+function addToMoves(reset) {
   if (reset) {
     moves = 0;
   } else {
     moves += 1;
   }
-  movesDisply.textContent = moves;
+  movesDisplay.textContent = moves;
 }
 
 /**
@@ -151,7 +184,7 @@ function turnCard(card) {
  */
 function setResetGameEvent(buttons) {
   for (let button of buttons) {
-    button.addEventListener('click', buildBoard,true);
+    button.addEventListener('click', buildBoard, true);
   }
 }
 
