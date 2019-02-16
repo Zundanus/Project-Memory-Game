@@ -1,5 +1,5 @@
 const availableCards = ['bomb', 'paper-plane-o', 'diamond', 'repeat', 'anchor', 'bolt', 'cube', 'leaf'];
-
+let matchedMaxCards = 0;
 let selectedCard;
 let matchedCards = 0;
 let cardEvaluationRuning = false;
@@ -14,6 +14,7 @@ function buildBoard() {
   for (let card of cardList) {
     fragmentCardBord.appendChild(cardTemplate(card));
   }
+  matchedMaxCards = cardList.length;
   document.querySelector('.deck').innerHTML = '';
   document.querySelector('.deck').appendChild(fragmentCardBord);
 }
@@ -79,7 +80,7 @@ function turnCardClickEvent(elemet) {
     if (selectedCard != undefined) {
       if (selectedCard.dataset.cardid === cardElemet.dataset.cardid) {
         setTimeout(function (){cardMatchAnimation(cardElemet);}, 1000);
-        matchedCards += 2;
+
       } else {
         setTimeout(function (){cardNoMatchAnimation(cardElemet);}, 1000);
       }
@@ -99,6 +100,18 @@ function cardMatchAnimation (cardElemet){
   cardElemet.classList.toggle('match');
   selectedCard = undefined;
   cardEvaluationRuning = false;
+  matchedCards += 2;
+  if (matchedCards >= matchedMaxCards) {
+    animationGameWon();
+  }
+}
+
+/**
+ * @description  Handels the Animation that appiers on Winning a game
+ * @param card - Card Element
+ */
+function animationGameWon (){
+  alert('youWon');
 }
 
 /**
