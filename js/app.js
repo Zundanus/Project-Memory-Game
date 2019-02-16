@@ -124,8 +124,8 @@ function animationGameWon (){
   winContainer.classList.toggle('hide');
 }
 /**
- * @description  Handels the Animation that appiers on Winning a game
- * @param card - Card Element
+ * @description  Counts the gamemoves and displays them
+ * @param {bool} reset - resets the  move value to 0 when true
  */
 function addToMoves (reset){
   if (reset) {
@@ -159,5 +159,4 @@ document.addEventListener('DOMContentLoaded', function() {
   buildBoard();
   setResetGameEvent(document.querySelectorAll('.restart'));
   deck.addEventListener('click', turnCardClickEvent);
-
 });
