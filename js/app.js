@@ -3,8 +3,10 @@ let matchedMaxCards = 0;
 let selectedCard;
 let matchedCards = 0;
 let cardEvaluationRuning = false;
-const deck = document.querySelector('.deck');
+let moves = 0;
+const movesDisply = document.querySelector('.moves');
 const winContainer = document.querySelector('.win-container');
+const deck = document.querySelector('.deck');
 
 /**
  * @description sets up a new gamebord
@@ -13,6 +15,8 @@ function buildBoard() {
   var cardList = shuffle(availableCards.concat(availableCards));
   const fragmentCardBord = document.createDocumentFragment();
   selectedCard = undefined;
+  moves = 0;
+  movesDisply.textContent = moves;
   for (let card of cardList) {
     fragmentCardBord.appendChild(cardTemplate(card));
   }
@@ -61,18 +65,6 @@ function shuffle(array) {
   return array;
 }
 
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
-
 /**
  * @description evaluates the card click event and initiates the necessary validations and actions
  * @param  element - event element
@@ -83,10 +75,11 @@ function turnCardClickEvent(elemet) {
   if (cardElemet.className === 'card' && !cardEvaluationRuning) {
     cardEvaluationRuning = true;
     turnCard(cardElemet);
+    moves += 1;
+    movesDisply.textContent = moves;
     if (selectedCard != undefined) {
       if (selectedCard.dataset.cardid === cardElemet.dataset.cardid) {
         setTimeout(function (){cardMatchAnimation(cardElemet);}, 500);
-
       } else {
         setTimeout(function (){cardNoMatchAnimation(cardElemet);}, 500);
       }
