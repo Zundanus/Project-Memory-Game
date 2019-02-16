@@ -15,8 +15,7 @@ function buildBoard() {
   var cardList = shuffle(availableCards.concat(availableCards));
   const fragmentCardBord = document.createDocumentFragment();
   selectedCard = undefined;
-  moves = 0;
-  movesDisply.textContent = moves;
+  addToMoves(true);
   for (let card of cardList) {
     fragmentCardBord.appendChild(cardTemplate(card));
   }
@@ -75,8 +74,6 @@ function turnCardClickEvent(elemet) {
   if (cardElemet.className === 'card' && !cardEvaluationRuning) {
     cardEvaluationRuning = true;
     turnCard(cardElemet);
-    moves += 1;
-    movesDisply.textContent = moves;
     if (selectedCard != undefined) {
       if (selectedCard.dataset.cardid === cardElemet.dataset.cardid) {
         setTimeout(function (){cardMatchAnimation(cardElemet);}, 500);
@@ -100,18 +97,10 @@ function cardMatchAnimation (cardElemet){
   selectedCard = undefined;
   cardEvaluationRuning = false;
   matchedCards += 2;
+  addToMoves(false);
   if (matchedCards >= matchedMaxCards) {
     animationGameWon();
   }
-}
-
-/**
- * @description  Handels the Animation that appiers on Winning a game
- * @param card - Card Element
- */
-function animationGameWon (){
-  deck.classList.toggle('hide');
-  winContainer.classList.toggle('hide');
 }
 
 /**
@@ -123,6 +112,28 @@ function cardNoMatchAnimation (cardElemet){
   turnCard(selectedCard);
   selectedCard = undefined;
   cardEvaluationRuning = false;
+  addToMoves(false);
+}
+
+/**
+ * @description  Handels the Animation that appiers on Winning a game
+ * @param card - Card Element
+ */
+function animationGameWon (){
+  deck.classList.toggle('hide');
+  winContainer.classList.toggle('hide');
+}
+/**
+ * @description  Handels the Animation that appiers on Winning a game
+ * @param card - Card Element
+ */
+function addToMoves (reset){
+  if (reset) {
+    moves = 0;
+  } else {
+    moves += 1;
+  }
+  movesDisply.textContent = moves;
 }
 
 /**
