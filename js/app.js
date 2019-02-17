@@ -4,11 +4,12 @@ let selectedCard;
 let matchedCards = 0;
 let cardEvaluationRuning = false;
 let moves = 0;
-let timerDisplay = document.querySelector('.timeDisplay');
 let timerStart = 0;
 let timerInterval;
+const timerDisplay = document.querySelector('.timeDisplay');
 const movesDisplay = document.querySelector('.moves');
 const winContainer = document.querySelector('.win-container');
+const scorePanel = document.querySelector('.score-panel');
 const deck = document.querySelector('.deck');
 
 /**
@@ -29,6 +30,8 @@ function buildBoard() {
   deck.innerHTML = '';
   deck.appendChild(fragmentCardBord);
   deck.classList.remove('hide');
+  scorePanel.classList.remove('hide');
+  winContainer.classList.add('hide');
   if (!winContainer.classList.contains('hide')) {
     winContainer.classList.add('hide');
   }
@@ -155,8 +158,12 @@ function cardNoMatchAnimation(cardElemet) {
  * @param card - Card Element
  */
 function animationGameWon() {
+  document.querySelector('.finalMove').innerHTML = movesDisplay.innerHTML;
+  document.querySelector('.finalTime').innerHTML = timerDisplay.innerHTML;
+  scorePanel.classList.add('hide');
   deck.classList.toggle('hide');
   winContainer.classList.toggle('hide');
+
 }
 
 /**
@@ -179,7 +186,7 @@ function setStarRanking() {
   var stars = document.querySelector('.stars').querySelectorAll('.fa');
 
   let starCount = 3;
-  if (moves < 16) {
+  if (moves < 1) {
     stars[0].className = 'fa fa-star';
     stars[1].className = 'fa fa-star';
     stars[2].className = 'fa fa-star';

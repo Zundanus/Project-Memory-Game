@@ -89,6 +89,9 @@ h1 {
     text-align: left;
     width: 345px;
     margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 1.2em;
 }
 
 .score-panel .stars {
@@ -97,6 +100,12 @@ h1 {
     display: inline-block;
     margin: 0 5px 0 0;
 }
+.score-panel .score-element {
+  width: 30%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
 
 .score-panel .stars li {
     list-style: none;
@@ -104,14 +113,15 @@ h1 {
 }
 
 .score-panel .restart {
-    float: right;
     cursor: pointer;
+    width: 10%;
 }
 
-.fa.big{
+.fa.big {
   font-size: 4.5em;
   color: green;
 }
+
 
 .win-container {
   margin-top: 100px;
@@ -142,6 +152,7 @@ h1 {
   -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
   -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
   box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+  cursor: pointer;
 }
 
 .hide {
