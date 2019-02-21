@@ -148,12 +148,14 @@ function cardNoMatchAnimation(cardElemet) {
 
   cardElemet.classList.add('unMatch');
   selectedCard.classList.add('unMatch');
-  turnCard(cardElemet);
-  turnCard(selectedCard);
-  selectedCard = undefined;
-  cardEvaluationRuning = false;
-  addToMoves(false);
-  setStarRanking();
+  setTimeout(function() {
+    turnCard(cardElemet);
+    turnCard(selectedCard);
+    selectedCard = undefined;
+    cardEvaluationRuning = false;
+    addToMoves(false);
+    setStarRanking();
+  }, 500);
 }
 
 /**
@@ -218,6 +220,7 @@ function setStarRanking() {
 function turnCard(card) {
   card.classList.toggle('show');
   card.classList.toggle('open');
+  card.classList.remove('unMatch');
 }
 
 /**

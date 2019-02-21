@@ -83,11 +83,10 @@ h1 {
 
 .deck .card.unMatch {
   cursor: default;
-  background: #ffb366;
-  font-size: 33px;
+  background: #f26ff2;
   backface-visibility: visible !important;
   animation-name: pulse;
-  animation-duration: .75s;
+  animation-duration: 1s;
   -webkit-backface-visibility: visible !important;
 }
 
@@ -177,7 +176,7 @@ h1 {
 
 @keyframes pulse {
     from {
-        transform: scale3d(1, 1, 1);
+        transform: scale3d(.5, .5, .5);
     }
 
     50% {
