@@ -194,11 +194,11 @@ function setStarRanking() {
     stars[0].className = 'fa fa-star';
     stars[1].className = 'fa fa-star';
     stars[2].className = 'fa fa-star';
-  } else if (moves < 24) {
+  } else if (moves < 23) {
     stars[0].className = 'fa fa-star';
     stars[1].className = 'fa fa-star';
     stars[2].className = 'fa fa-star-o';
-  } else if (moves < 40) {
+  } else if (moves < 30) {
     stars[0].className = 'fa fa-star';
     stars[1].className = 'fa fa-star-o';
     stars[2].className = 'fa fa-star-o';
@@ -227,10 +227,21 @@ function setResetGameEvent(buttons) {
   for (let button of buttons) {
     button.addEventListener('click', buildBoard, true);
   }
+  document.addEventListener("keydown", function(){ shortcutReset(event);  });
+}
+
+/**
+ * @description  resets bord with a keybrod shortcut
+ */
+function shortcutReset(event) {
+  if (!cardEvaluationRuning && event.key.toLowerCase() === 'r') {
+    buildBoard();
+  }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
   buildBoard();
   setResetGameEvent(document.querySelectorAll('.restart'));
   deck.addEventListener('click', turnCardClickEvent);
+
 });
