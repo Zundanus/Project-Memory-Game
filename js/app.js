@@ -109,11 +109,11 @@ function turnCardClickEvent(elemet) {
       if (selectedCard.dataset.cardid === cardElemet.dataset.cardid) {
         setTimeout(function() {
           cardMatchAnimation(cardElemet);
-        }, 300);
+        }, 1000);
       } else {
         setTimeout(function() {
           cardNoMatchAnimation(cardElemet);
-        }, 300);
+        }, 1000);
       }
     } else {
       selectedCard = cardElemet;
@@ -155,7 +155,7 @@ function cardNoMatchAnimation(cardElemet) {
     cardEvaluationRuning = false;
     addToMoves(false);
     setStarRanking();
-  }, 500);
+  }, 1500);
 }
 
 /**
