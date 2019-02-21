@@ -4,7 +4,7 @@ let selectedCard;
 let matchedCards = 0;
 let cardEvaluationRuning = false;
 let moves = 0;
-let timerStart = 0;
+let timerCounter = 0;
 let timerInterval;
 const timerDisplay = document.querySelector('.timeDisplay');
 const movesDisplay = document.querySelector('.moves');
@@ -17,6 +17,8 @@ const deck = document.querySelector('.deck');
  */
 function buildBoard() {
   selectedCard = undefined;
+  timerCounter =0;
+  timerDisplay.innerHTML = '00:00';
   clearInterval(timerInterval);
   timer();
   addToMoves(true);
@@ -39,18 +41,12 @@ function buildBoard() {
 
 /**
  * @description Starts the timer for a game
- * Timer inspired by https://stackoverflow.com/questions/20618355/the-simplest-possible-javascript-countdown-timer
  **/
 function timer() {
-  let minutes = 0;
-  let seconds = 0;
   timerInterval = setInterval(function() {
-    seconds = parseInt(seconds, 10) + 1;
-    minutes = parseInt(minutes, 10);
-    if (seconds >= 60) {
-      minutes += 1;
-      seconds = 0;
-    }
+    timerCounter += 1;
+    let minutes = Math.floor(timerCounter / 60);
+    let seconds = timerCounter % 60;
 
     seconds = seconds < 10 ? "0" + seconds : seconds;
     minutes = minutes < 10 ? "0" + minutes : minutes;
