@@ -158,12 +158,15 @@ function cardNoMatchAnimation(cardElemet) {
  * @param card - Card Element
  */
 function animationGameWon() {
+  var newStars = document.querySelector('.stars').cloneNode(true);
+  newStars.classList.add('win-stars');
+  var oldStars = winContainer.querySelector('.stars');
+  winContainer.replaceChild(newStars, oldStars);
   document.querySelector('.finalMove').innerHTML = movesDisplay.innerHTML;
   document.querySelector('.finalTime').innerHTML = timerDisplay.innerHTML;
   scorePanel.classList.add('hide');
   deck.classList.toggle('hide');
   winContainer.classList.toggle('hide');
-
 }
 
 /**
@@ -186,7 +189,7 @@ function setStarRanking() {
   var stars = document.querySelector('.stars').querySelectorAll('.fa');
 
   let starCount = 3;
-  if (moves < 1) {
+  if (moves < 16) {
     stars[0].className = 'fa fa-star';
     stars[1].className = 'fa fa-star';
     stars[2].className = 'fa fa-star';

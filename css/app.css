@@ -107,7 +107,7 @@ h1 {
   flex-direction: column;
 }
 
-.score-panel .stars li {
+.stars li {
     list-style: none;
     display: inline-block;
 }
@@ -139,6 +139,12 @@ h1 {
   -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
   -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
   box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+}
+.win-stars {
+  padding-inline-start: 0px;
+  padding-left: 0px;
+  font-size: 4.0em;
+  color: darkgoldenrod;
 }
 
 .button{
