@@ -145,6 +145,9 @@ function cardMatchAnimation(cardElemet) {
  * @param cardElemet - Card Element
  */
 function cardNoMatchAnimation(cardElemet) {
+
+  cardElemet.classList.add('unMatch');
+  selectedCard.classList.add('unMatch');
   turnCard(cardElemet);
   turnCard(selectedCard);
   selectedCard = undefined;

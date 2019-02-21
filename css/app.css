@@ -81,6 +81,16 @@ h1 {
     font-size: 33px;
 }
 
+.deck .card.unMatch {
+  cursor: default;
+  background: #ffb366;
+  font-size: 33px;
+  backface-visibility: visible !important;
+  animation-name: pulse;
+  animation-duration: .75s;
+  -webkit-backface-visibility: visible !important;
+}
+
 /*
  * Styles for the Score Panel
  */
@@ -163,4 +173,18 @@ h1 {
 
 .hide {
   display:none;
+}
+
+@keyframes pulse {
+    from {
+        transform: scale3d(1, 1, 1);
+    }
+
+    50% {
+        transform: scale3d(1.2, 1.2, 1.2);
+    }
+
+    to {
+        transform: scale3d(1, 1, 1);
+    }
 }
