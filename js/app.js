@@ -9,21 +9,23 @@ let timerInterval;
 const timerDisplay = document.querySelector('.timeDisplay');
 const movesDisplay = document.querySelector('.moves');
 const winContainer = document.querySelector('.win-container');
+const saveContainer = document.querySelector('.save-container');
 const scorePanel = document.querySelector('.score-panel');
 const deck = document.querySelector('.deck');
+const loadButton = document.querySelector('.load');
 
 /**
  * @description sets up a new gamebord
  */
 function buildBoard() {
   selectedCard = undefined;
-  timerCounter =0;
+  timerCounter = 0;
   timerDisplay.innerHTML = '00:00';
   clearInterval(timerInterval);
   timer();
   addToMoves(true);
   setStarRanking();
-  var cardList = shuffle(availableCards.concat(availableCards));
+  let cardList = shuffle(availableCards.concat(availableCards));
   const fragmentCardBord = document.createDocumentFragment();
   for (let card of cardList) {
     fragmentCardBord.appendChild(cardTemplate(card));
@@ -34,6 +36,7 @@ function buildBoard() {
   deck.classList.remove('hide');
   scorePanel.classList.remove('hide');
   winContainer.classList.add('hide');
+  saveContainer.classList.add('hide');
   if (!winContainer.classList.contains('hide')) {
     winContainer.classList.add('hide');
   }
@@ -77,7 +80,7 @@ function cardTemplate(cardId) {
  * form: Shuffle function from http://stackoverflow.com/a/2450976
  */
 function shuffle(array) {
-  var currentIndex = array.length,
+  let currentIndex = array.length,
     temporaryValue, randomIndex;
 
   while (currentIndex !== 0) {
@@ -159,9 +162,9 @@ function cardNoMatchAnimation(cardElemet) {
  * @param card - Card Element
  */
 function animationGameWon() {
-  var newStars = document.querySelector('.stars').cloneNode(true);
+  let newStars = document.querySelector('.stars').cloneNode(true);
   newStars.classList.add('win-stars');
-  var oldStars = winContainer.querySelector('.stars');
+  let oldStars = winContainer.querySelector('.stars');
   winContainer.replaceChild(newStars, oldStars);
   document.querySelector('.finalMove').innerHTML = movesDisplay.innerHTML;
   document.querySelector('.finalTime').innerHTML = timerDisplay.innerHTML;
@@ -187,7 +190,7 @@ function addToMoves(reset) {
  * @description  Counts the gamemoves and displays them also
  */
 function setStarRanking() {
-  var stars = document.querySelector('.stars').querySelectorAll('.fa');
+  let stars = document.querySelector('.stars').querySelectorAll('.fa');
 
   let starCount = 3;
   if (moves < 16) {
@@ -227,7 +230,9 @@ function setResetGameEvent(buttons) {
   for (let button of buttons) {
     button.addEventListener('click', buildBoard, true);
   }
-  document.addEventListener("keydown", function(){ shortcutReset(event);  });
+  document.addEventListener("keydown", function() {
+    shortcutReset(event);
+  });
 }
 
 /**
@@ -239,9 +244,67 @@ function shortcutReset(event) {
   }
 }
 
+/**
+ * @description  saves the values to the localStorage
+ */
+function save() {
+  if (!cardEvaluationRuning) {
+    localStorage.setItem('memorySave', 'true');
+    localStorage.setItem('matchedMaxCards', matchedMaxCards);
+    localStorage.setItem('matchedCards', matchedCards);
+    localStorage.setItem('moves', moves);
+    localStorage.setItem('timerCounter', timerCounter);
+    let cardList = document.querySelectorAll('.card');
+    let cardSaveValues = [];
+    for (let card of cardList) {
+      cardSaveValues.push(card.className);
+    }
+    localStorage.setItem('cardSaveValues', JSON.stringify(cardSaveValues));
+    loadButton.classList.remove('hide');
+    saveContainer.classList.remove('hide');
+    deck.classList.add('hide');
+  }
+}
+
+/**
+ * @description  loads the values to the localStorage
+ */
+function load() {
+  if (localStorage.getItem('memorySave') === 'true') {
+    matchedMaxCards = Number(localStorage.getItem('matchedMaxCards'));
+    matchedCards = Number(localStorage.getItem('matchedCards'));
+    moves = Number(localStorage.getItem('moves'));
+    timerCounter = Number(localStorage.getItem('timerCounter'));
+    let cardList = document.querySelectorAll('.card');
+    let cardSaveValues = JSON.parse(localStorage.getItem('cardSaveValues'));
+    for (let i = 0; i < cardList.length; i++) {
+      cardList[i].className = cardSaveValues[i];
+    }
+    movesDisplay.textContent = moves;
+    setStarRanking();
+  }
+}
+
+/**
+ * @description  handels the display for the save info box
+ */
+function closeButton() {
+  saveContainer.classList.add('hide');
+  deck.classList.remove('hide');
+}
+
+/**
+ * @description  main  initializer for the events and visible elements
+ */
 document.addEventListener('DOMContentLoaded', function() {
   buildBoard();
   setResetGameEvent(document.querySelectorAll('.restart'));
   deck.addEventListener('click', turnCardClickEvent);
-
+  document.querySelector('.save').addEventListener('click', save, true);
+  document.querySelector('.close').addEventListener('click', closeButton());
+  if (localStorage.getItem('memorySave') === 'true') {
+    loadButton.addEventListener('click', load, true);
+  } else {
+    loadButton.classList.add('hide');
+  }
 });

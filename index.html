@@ -16,21 +16,27 @@
       <h1>Matching Game</h1>
     </header>
     <section class="score-panel">
-      <div  class="score-element">
+      <div class="score-element">
         <ul class="stars">
           <li><i class="fa fa-star"></i></li>
           <li><i class="fa fa-star"></i></li>
           <li><i class="fa fa-star"></i></li>
         </ul>
       </div>
-      <div  class="score-element">
+      <div class="score-element">
         <span>Moves</span> <span class="moves">3</span>
       </div>
-      <div  class="score-element">
+      <div class="score-element">
         <span>Time</span><span class="timeDisplay">00:00</span>
       </div>
-      <div class="score-element restart">
+      <div class="restart score-element-button">
         <i class="fa fa-repeat"></i>
+      </div>
+      <div class="save score-element-button">
+        <i class="fa fa-upload"></i>
+      </div>
+      <div class="load score-element-button">
+        <i class="fa fa-download"></i>
       </div>
     </section>
     <div class="win-container hide">
@@ -47,6 +53,12 @@
       </ul>
       <div class="restart button">
         <span>TRY AGAIN</span>
+      </div>
+    </div>
+    <div class="save-container hide">
+      <h1>the game is saved !</h1>
+      <div class="close button">
+        <span>OK</span>
       </div>
     </div>
     <ul class="deck">

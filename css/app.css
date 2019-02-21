@@ -116,6 +116,12 @@ h1 {
   font-size: 1.2em;
 }
 
+.score-panel .score-element-button {
+  cursor: pointer;
+  padding: 14px;
+  width: 5%;
+}
+
 .score-panel .stars {
   margin: 0;
   padding: 0;
@@ -124,7 +130,7 @@ h1 {
 }
 
 .score-panel .score-element {
-  width: 30%;
+  width: 25%;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -135,17 +141,12 @@ h1 {
   display: inline-block;
 }
 
-.score-panel .restart {
-  cursor: pointer;
-  width: 10%;
-}
-
 .fa.big {
   font-size: 4.5em;
   color: green;
 }
 
-.win-container {
+.win-container, .save-container {
   margin-top: 100px;
   padding: 50px;
   display: flex;
