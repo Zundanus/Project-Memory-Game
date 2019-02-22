@@ -75,7 +75,10 @@ function save() {
     let cardSaveValues = [];
     for (let card of cardList) {
       let icon = card.querySelector('i').className;
-      cardSaveValues.push({'cardCss' : card.className,'iconCss': icon});
+      cardSaveValues.push({
+        'cardCss': card.className,
+        'iconCss': icon
+      });
     }
     localStorage.setItem('cardSaveValues', JSON.stringify(cardSaveValues));
     loadButton.classList.remove('hide');
@@ -97,7 +100,7 @@ function load() {
     let cardSaveValues = JSON.parse(localStorage.getItem('cardSaveValues'));
     for (let i = 0; i < cardList.length; i++) {
       cardList[i].className = cardSaveValues[i].cardCss;
-      cardList[i].dataset.cardid =  cardSaveValues[i].iconCss;
+      cardList[i].dataset.cardid = cardSaveValues[i].iconCss;
       let icon = cardList[i].querySelector('i');
       icon.className = cardSaveValues[i].iconCss;
     }
@@ -309,7 +312,7 @@ function bindButtons() {
   setResetGameEvent(document.querySelectorAll('.restart'));
   deck.addEventListener('click', turnCardClickEvent);
   document.querySelector('.save').addEventListener('click', save, true);
-  document.querySelector('.close').addEventListener('click', closeButton,true);
+  document.querySelector('.close').addEventListener('click', closeButton, true);
 }
 
 /**
