@@ -1,4 +1,10 @@
 const availableCards = ['bomb', 'paper-plane-o', 'diamond', 'repeat', 'anchor', 'bolt', 'cube', 'leaf'];
+const timerDisplay = document.querySelector('.timeDisplay');
+const movesDisplay = document.querySelector('.moves');
+const winContainer = document.querySelector('.win-container');
+const saveContainer = document.querySelector('.save-container');
+const scorePanel = document.querySelector('.score-panel');
+const loadButton = document.querySelector('.load');
 let matchedMaxCards = 0;
 let selectedCard;
 let matchedCards = 0;
@@ -6,13 +12,7 @@ let cardEvaluationRuning = false;
 let moves = 0;
 let timerCounter = 0;
 let timerInterval;
-const timerDisplay = document.querySelector('.timeDisplay');
-const movesDisplay = document.querySelector('.moves');
-const winContainer = document.querySelector('.win-container');
-const saveContainer = document.querySelector('.save-container');
-const scorePanel = document.querySelector('.score-panel');
-const deck = document.querySelector('.deck');
-const loadButton = document.querySelector('.load');
+let deck = document.querySelector('.deck'); // let because of the Save and load function
 
 /**
  * @description sets up a new gamebord
@@ -40,6 +40,71 @@ function buildBoard() {
   if (!winContainer.classList.contains('hide')) {
     winContainer.classList.add('hide');
   }
+  if (localStorage.getItem('memorySave') === 'true') {
+    loadButton.addEventListener('click', load, true);
+  } else {
+    loadButton.classList.add('hide');
+  }
+}
+
+/**
+ * @description returns the html template for a card
+ * @param  cardId - id Of the card
+ * @return htmlElemt for a card element
+ **/
+function cardTemplate(cardId) {
+  const li = document.createElement('li');
+  li.className = 'card';
+  li.setAttribute('data-cardid', cardId);
+  const i = document.createElement('i');
+  i.className = `fa fa-${cardId}`;
+  li.appendChild(i);
+  return li;
+}
+/**
+ * @description  saves the values to the localStorage
+ */
+function save() {
+  if (!cardEvaluationRuning) {
+    localStorage.setItem('memorySave', 'true');
+    localStorage.setItem('matchedMaxCards', matchedMaxCards);
+    localStorage.setItem('matchedCards', matchedCards);
+    localStorage.setItem('moves', moves);
+    localStorage.setItem('timerCounter', timerCounter);
+    let cardList = document.querySelectorAll('.card');
+    let cardSaveValues = [];
+    for (let card of cardList) {
+      let icon = card.querySelector('i').className;
+      cardSaveValues.push({'cardCss' : card.className,'iconCss': icon});
+    }
+    localStorage.setItem('cardSaveValues', JSON.stringify(cardSaveValues));
+    loadButton.classList.remove('hide');
+    saveContainer.classList.remove('hide');
+    deck.classList.add('hide');
+  }
+}
+
+/**
+ * @description  loads the values to the localStorage
+ */
+function load() {
+  if (localStorage.getItem('memorySave') === 'true') {
+    matchedMaxCards = Number(localStorage.getItem('matchedMaxCards'));
+    matchedCards = Number(localStorage.getItem('matchedCards'));
+    moves = Number(localStorage.getItem('moves'));
+    timerCounter = Number(localStorage.getItem('timerCounter'));
+    let cardList = document.querySelectorAll('.card');
+    let cardSaveValues = JSON.parse(localStorage.getItem('cardSaveValues'));
+    for (let i = 0; i < cardList.length; i++) {
+      cardList[i].className = cardSaveValues[i].cardCss;
+      cardList[i].dataset.cardid =  cardSaveValues[i].iconCss;
+      let icon = cardList[i].querySelector('i');
+      icon.className = cardSaveValues[i].iconCss;
+    }
+    movesDisplay.textContent = moves;
+    deck = document.querySelector('.deck');
+    setStarRanking();
+  }
 }
 
 /**
@@ -56,21 +121,6 @@ function timer() {
 
     timerDisplay.innerHTML = `${minutes}:${seconds}`;
   }, 1000);
-}
-
-/**
- * @description returns the html template for a card
- * @param  cardId - id Of the card
- * @return htmlElemt for a card element
- **/
-function cardTemplate(cardId) {
-  const li = document.createElement('li');
-  li.className = 'card';
-  li.setAttribute('data-cardid', cardId);
-  const i = document.createElement('i');
-  i.className = `fa fa-${cardId}`;
-  li.appendChild(i);
-  return li;
 }
 
 /**
@@ -245,48 +295,7 @@ function shortcutReset(event) {
 }
 
 /**
- * @description  saves the values to the localStorage
- */
-function save() {
-  if (!cardEvaluationRuning) {
-    localStorage.setItem('memorySave', 'true');
-    localStorage.setItem('matchedMaxCards', matchedMaxCards);
-    localStorage.setItem('matchedCards', matchedCards);
-    localStorage.setItem('moves', moves);
-    localStorage.setItem('timerCounter', timerCounter);
-    let cardList = document.querySelectorAll('.card');
-    let cardSaveValues = [];
-    for (let card of cardList) {
-      cardSaveValues.push(card.className);
-    }
-    localStorage.setItem('cardSaveValues', JSON.stringify(cardSaveValues));
-    loadButton.classList.remove('hide');
-    saveContainer.classList.remove('hide');
-    deck.classList.add('hide');
-  }
-}
-
-/**
- * @description  loads the values to the localStorage
- */
-function load() {
-  if (localStorage.getItem('memorySave') === 'true') {
-    matchedMaxCards = Number(localStorage.getItem('matchedMaxCards'));
-    matchedCards = Number(localStorage.getItem('matchedCards'));
-    moves = Number(localStorage.getItem('moves'));
-    timerCounter = Number(localStorage.getItem('timerCounter'));
-    let cardList = document.querySelectorAll('.card');
-    let cardSaveValues = JSON.parse(localStorage.getItem('cardSaveValues'));
-    for (let i = 0; i < cardList.length; i++) {
-      cardList[i].className = cardSaveValues[i];
-    }
-    movesDisplay.textContent = moves;
-    setStarRanking();
-  }
-}
-
-/**
- * @description  handels the display for the save info box
+ * @description  handels the event for the close button for the save info box
  */
 function closeButton() {
   saveContainer.classList.add('hide');
@@ -294,17 +303,19 @@ function closeButton() {
 }
 
 /**
+ * @description  bind evnets to the game controll buttons
+ */
+function bindButtons() {
+  setResetGameEvent(document.querySelectorAll('.restart'));
+  deck.addEventListener('click', turnCardClickEvent);
+  document.querySelector('.save').addEventListener('click', save, true);
+  document.querySelector('.close').addEventListener('click', closeButton,true);
+}
+
+/**
  * @description  main  initializer for the events and visible elements
  */
 document.addEventListener('DOMContentLoaded', function() {
   buildBoard();
-  setResetGameEvent(document.querySelectorAll('.restart'));
-  deck.addEventListener('click', turnCardClickEvent);
-  document.querySelector('.save').addEventListener('click', save, true);
-  document.querySelector('.close').addEventListener('click', closeButton());
-  if (localStorage.getItem('memorySave') === 'true') {
-    loadButton.addEventListener('click', load, true);
-  } else {
-    loadButton.classList.add('hide');
-  }
+  bindButtons();
 });
