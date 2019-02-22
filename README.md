@@ -22,6 +22,8 @@ The following seits and resources were used to develop or inspire parts of this 
 - Udacity Memory Game Project https://www.diigo.com/outliner/fii42b/Udacity-Memory-Game-Project?key=dwj0y5x9cw
 - Shuffle function from http://stackoverflow.com/a/2450976 provided the shuffle function i used to shuffle the cards
 - css for the animation https://www.theappguruz.com/tag-tools/web/CSSAnimations/
+- tooltip css https://wiki.selfhtml.org/wiki/CSS/Tutorials/Tooltips_mit_CSS
+- fonts from https://fontawesome.com
 
 ## Author
 - Holger Bötticher

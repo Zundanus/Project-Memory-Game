@@ -290,3 +290,35 @@ h1 {
     animation-timing-function: ease-in;
   }
 }
+
+.tooltip {
+	color: #black;
+	text-decoration: underline;
+	cursor: help;
+}
+
+[data-tooltip] {
+	position: relative;
+}
+
+[data-tooltip]::after {
+	content: attr(data-tooltip);
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity 0.5s;
+	display: block;
+	position: absolute;
+	bottom: 1em;
+	left: 2em;
+	width: 15em;
+	padding: 0.5em;
+	z-index: 100;
+	color: #000;
+	background-color: gray;
+	border: solid 1px #c32e04;
+	border-radius: 0.5em;
+}
+
+[data-tooltip]:hover::after {
+	opacity: 1;
+}
