@@ -21,6 +21,7 @@ function buildBoard() {
   selectedCard = undefined;
   timerCounter = 0;
   timerDisplay.innerHTML = '00:00';
+  matchedCards = 0;
   clearInterval(timerInterval);
   timer();
   addToMoves(true);
@@ -106,6 +107,8 @@ function load() {
     }
     movesDisplay.textContent = moves;
     deck = document.querySelector('.deck');
+    let openCards = document.querySelectorAll('li.card.open:not(.match)')
+    selectedCard = openCards.length === 1 ? openCards[0] : undefined;
     setStarRanking();
   }
 }
