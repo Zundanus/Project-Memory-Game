@@ -119,7 +119,11 @@ h1 {
 .score-panel .score-element-button {
   cursor: pointer;
   padding: 14px;
-  width: 5%;
+  width: 4%;
+  margin-left: 10px;
+}
+.score-element-button .fa.button-icon {
+  font-size: 1.7em;
 }
 
 .score-panel .stars {
@@ -130,7 +134,7 @@ h1 {
 }
 
 .score-panel .score-element {
-  width: 25%;
+  width: 22%;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -165,7 +169,6 @@ h1 {
 }
 
 .win-stars {
-  padding-inline-start: 0px;
   padding-left: 0px;
   font-size: 4.0em;
   color: darkgoldenrod;
