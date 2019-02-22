@@ -46,6 +46,7 @@ function buildBoard() {
   } else {
     loadButton.classList.add('hide');
   }
+  cardEvaluationRuning= false;
 }
 
 /**
@@ -182,16 +183,20 @@ function turnCardClickEvent(elemet) {
  * @param cardElemet - Card Element
  */
 function cardMatchAnimation(cardElemet) {
-  selectedCard.classList.toggle('match');
-  cardElemet.classList.toggle('match');
-  selectedCard = undefined;
-  cardEvaluationRuning = false;
-  matchedCards += 2;
-  addToMoves(false);
-  setStarRanking();
-  if (matchedCards >= matchedMaxCards) {
-    clearInterval(timerInterval);
-    animationGameWon();
+  if (selectedCard != undefined) {
+    selectedCard.classList.toggle('match');
+    cardElemet.classList.toggle('match');
+    selectedCard = undefined;
+    cardEvaluationRuning = false;
+    matchedCards += 2;
+    addToMoves(false);
+    setStarRanking();
+    if (matchedCards >= matchedMaxCards) {
+      clearInterval(timerInterval);
+      animationGameWon();
+    }
+  } else {
+    cardEvaluationRuning = false;
   }
 }
 
@@ -200,17 +205,20 @@ function cardMatchAnimation(cardElemet) {
  * @param cardElemet - Card Element
  */
 function cardNoMatchAnimation(cardElemet) {
-
-  cardElemet.classList.add('unMatch');
-  selectedCard.classList.add('unMatch');
-  setTimeout(function() {
-    turnCard(cardElemet);
-    turnCard(selectedCard);
-    selectedCard = undefined;
+  if (selectedCard != undefined) {
+    cardElemet.classList.add('unMatch');
+    selectedCard.classList.add('unMatch');
+    setTimeout(function() {
+      turnCard(cardElemet);
+      turnCard(selectedCard);
+      selectedCard = undefined;
+      cardEvaluationRuning = false;
+      addToMoves(false);
+      setStarRanking();
+    }, 1500);
+  } else {
     cardEvaluationRuning = false;
-    addToMoves(false);
-    setStarRanking();
-  }, 1500);
+  }
 }
 
 /**
@@ -253,13 +261,9 @@ function setStarRanking() {
     stars[0].className = 'fa fa-star';
     stars[1].className = 'fa fa-star';
     stars[2].className = 'fa fa-star';
-  } else if (moves < 23) {
+  } else if (moves < 25) {
     stars[0].className = 'fa fa-star';
     stars[1].className = 'fa fa-star';
-    stars[2].className = 'fa fa-star-o';
-  } else if (moves < 30) {
-    stars[0].className = 'fa fa-star';
-    stars[1].className = 'fa fa-star-o';
     stars[2].className = 'fa fa-star-o';
   } else {
     stars[0].className = 'fa fa-star-o';
